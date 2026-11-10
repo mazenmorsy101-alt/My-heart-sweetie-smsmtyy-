@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sama | 11.11</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+:root {
+  --pink: #f5cbd8;
+  --rose: #d88da7;
+  --dark: #633d50;
+  --cream: #fff8f8;
+  --muted: #a8798d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: 'Cairo', sans-serif;
+  overflow-x: hidden;
+}
+button { font-family: inherit; cursor: pointer; }
+
+/* Intro Screen */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(145deg,#fce8ee,#f7cbd9,#fff5f5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+  transition: opacity 1s, visibility 1s;
+}
+
+#intro.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-star { font-size: 55px; margin-bottom: 20px; animation: pulse 2s infinite; }
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px,10vw,70px);
+  color: #8b536a;
+  direction: ltr;
+  text-shadow: 0 4px 15px rgba(216, 141, 167, 0.3);
+}
+.intro-sub { margin: 15px 0 30px; color: #986b7e; font-size: 16px; }
+
+.open-btn {
+  border: 0;
+  padding: 16px 40px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #a75e7b, #d88da7);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 8px 25px rgba(167, 94, 123, 0.4);
+  transition: all .3s ease;
+  animation: bounce 2s infinite;
+}
+.open-btn:hover { transform: scale(1.05); box-shadow: 0 12px 30px rgba(167, 94, 123, 0.6); }
+
+/* Audio Floating Player */
+.music-player {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: 1px solid #f3d9e2;
+  box-shadow: 0 8px 25px rgba(139, 83, 106, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.music-player:hover { transform: scale(1.05); }
+.music-icon { font-size: 18px; animation: spin 4s linear infinite; }
+.music-text { font-size: 13px; color: #865169; font-weight: bold; }
+
+/* Stars & Particles Container */
+#stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  color: #d99ab0;
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+/* Scroll Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+main { opacity: 0; transition: opacity 1.5s; }
+main.visible { opacity: 1; }
+
+section {
+  padding: 95px 22px;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: 
+    radial-gradient(ellipse at 50% 35%,#f9dce5 0%,transparent 60%),
+    linear-gradient(#fff8fa,#fff1f5);
+}
+
+.date {
+  letter-spacing: 6px;
+  font-size: 13px;
+  color: #a76c82;
+  direction: ltr;
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(60px,13vw,100px);
+  font-weight: 500;
+  color: #a65e7a;
+  margin: 15px 0;
+  direction: ltr;
+  text-shadow: 0 5px 20px rgba(166, 94, 122, 0.2);
+}
+
+.hero p {
+  font-size: 17px;
+  line-height: 2.2;
+  max-width: 480px;
+  color: #90697a;
+}
+
+.scroll {
+  margin-top: 70px;
+  font-size: 12px;
+  color: #b68b9c;
+  animation: float 2s infinite;
+}
+
+.counter-section {
+  background: #fff3f6;
+  padding: 60px 20px;
+}
+.counter-box {
+  display: inline-block;
+  background: white;
+  padding: 22px 45px;
+  border-radius: 25px;
+  border: 1px solid #f3d9e2;
+  color: #8b536a;
+  font-size: 21px;
+  font-weight: bold;
+  box-shadow: 0 12px 35px rgba(183, 123, 146, 0.15);
+}
+
+.section-label {
+  color: #bd8097;
+  font-size: 12px;
+  letter-spacing: 3px;
+  direction: ltr;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: clamp(26px,6vw,40px);
+  color: #865169;
+  margin-bottom: 20px;
+}
+
+.description {
+  max-width: 570px;
+  margin: auto;
+  color: #947385;
+  line-height: 2.3;
+  font-size: 16px;
+}
+
+.reasons { background: #fff1f5; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+  gap: 20px;
+  max-width: 880px;
+  margin: 45px auto 0;
+}
+
+.card {
+  background: #fffafb;
+  padding: 35px 22px;
+  border-radius: 25px;
+  border: 1px solid #f3d9e2;
+  transition: all .4s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(183, 123, 146, 0.2);
+}
+
+.card .symbol { font-size: 32px; margin-bottom: 15px; }
+.card h3 { color: #995d77; margin-bottom: 12px; font-size: 19px; }
+.card p { font-size: 14px; line-height: 2.1; color: #987b89; }
+
+.memory { background: #fff9fa; }
+
+.memory-box {
+  max-width: 620px;
+  margin: 35px auto;
+  padding: 40px 28px;
+  border-radius: 30px;
+  background: linear-gradient(145deg,#fce5ed,#fff3f6);
+  border: 1px solid #f0d0dc;
+  box-shadow: 0 10px 30px rgba(135, 89, 111, 0.1);
+}
+
+.memory-box p { line-height: 2.5; color: #87596f; font-size: 16px; }
+
+.letter { background: linear-gradient(145deg,#f8dce6,#fff2f5); }
+
+.letter-paper {
+  display: none;
+  max-width: 650px;
+  margin: 35px auto;
+  background: #fffafa;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(155, 93, 117, 0.25);
+  text-align: right;
+  position: relative;
+  animation: appear 1s ease-out;
+}
+
+.letter-paper::before {
+  content: '♡';
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: #d99ab0;
+  font-size: 28px;
+}
+
+.letter-paper p { line-height: 2.6; color: #795468; font-size: 16px; }
+.letter-paper .signature { margin-top: 35px; text-align: left; color: #ac6c85; font-weight: bold; font-size: 17px; }
+
+.reveal-btn {
+  border: 2px solid #d69bb0;
+  background: white;
+  color: #965c75;
+  border-radius: 35px;
+  padding: 15px 35px;
+  margin-top: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all .3s ease;
+  box-shadow: 0 8px 20px rgba(150, 92, 117, 0.15);
+}
+
+.reveal-btn:hover {
+  background: #a75e7b;
+  color: white;
+  border-color: #a75e7b;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(167, 94, 123, 0.3);
+}
+
+.final {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff8fa;
+}
+
+.final h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px,9vw,68px);
+  direction: ltr;
+  color: #a65e7a;
+}
+
+.final .big-heart { font-size: 55px; margin: 25px; animation: pulse 2s infinite; color: #d88da7; }
+
+footer {
+  padding: 35px;
+  text-align: center;
+  background: #f7e1e9;
+  color: #a27488;
+  font-size: 13px;
+  direction: ltr;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes pulse { 50% { transform: scale(1.15); } }
+@keyframes twinkle { 0%,100% { opacity: .2; transform: scale(.8); } 50% { opacity: .9; transform: scale(1.3); } }
+@keyframes float { 50% { transform: translateY(8px); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes appear { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Particle/Confetti Styles */
+.heart-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  animation: floatUp 2.5s ease-out forwards;
+}
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.4) rotate(45deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- Audio element (موسيقى هادئة) -->
+<audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"></audio>
+
+<!-- Floating Music Player -->
+<div class="music-player" onclick="toggleMusic()">
+  <span class="music-icon" id="musicIcon">🎵</span>
+  <span class="music-text" id="musicText">تشغيل الموسيقى</span>
+</div>
+
+<div id="stars"></div>
+
+<div id="intro">
+  <div class="intro-star">✧</div>
+  <div class="intro-title">For Sama</div>
+  <p class="intro-sub">A little universe made just for you ♡</p>
+  <button class="open-btn" onclick="openSite(event)">افتحي مفاجأتك ♡</button>
+  <p style="margin-top:25px;font-size:12px;color:#b68b9c;direction:ltr">11 . 11 . 2026</p>
+</div>
+
+<main id="main">
+
+<section class="hero">
+  <div class="date fade-in">NOVEMBER 11 · 2026</div>
+  <h1 class="fade-in">Sama.</h1>
+  <p class="fade-in">
+  حابب اقول لسمسمتي ف اول كلامي ان مش كل الناس في حياتنا بتعدي وتسيب أثر في ناس وجودها لوحده بيخلي كل حاجة احلى.
+  وإنتِ واحدة من الناس دي او بالنسبالي ب الناس كلهم و يعني حابب اقول اني بتلكك اصلا عشان اعمل الي بعمله ده 🤨
+  </p>
+  <div class="scroll">SCROLL TO DISCOVER ↓</div>
+</section>
+
+<section class="counter-section fade-in">
+  <div class="section-label">OUR SPECIAL MOMENTS</div>
+  <h2>حكايتنا مع بعض</h2>
+  <div class="counter-box">
+    أحلى <span style="color: #a75e7b; font-size: 28px;">129</span> يوم سوا ♡
+  </div>
+</section>
+
+<section class="fade-in">
+  <div class="section-label">A NOTE FOR YOU</div>
+  <h2>عارفة يسمسومتي إنتي مميزة ليه؟</h2>
+  <p class="description">
+  طبعا سمسمتي عارفه ان مازن ..... بس يعني تعالي اخدك لفه احاول اتكلم فيها
+  </p>
+</section>
+
+<section class="reasons">
+  <div class="section-label fade-in">THINGS I APPRECIATE</div>
+  <h2 class="fade-in">حاجات بحبها فيكي</h2>
+  <p class="description fade-in">بصراحه ابقا كداب لو حددت حاجة معينه مفيش حاجة فسمسم مش بحبها هي كلها بيرفكت عموما</p>
+  <div class="cards">
+    <div class="card fade-in">
+      <div class="symbol">♡</div>
+      <h3>يعني والله مش عارف اقول ايه بس مفيش اطيب من سمسم</h3>
+      <p>طيبتك وطريقتك في الاهتمام بتفاصيل صغيرة ممكن غيرك مياخدش باله منها.</p>
+    </div>
+    <div class="card fade-in">
+      <div class="symbol">✧</div>
+      <h3>وجودك</h3>
+      <p>إن مجرد وجودك في يومي ممكن يخلّي اليوم العادي يبقى له معنى مختلف و يعني يخلي دنيتي كلها حلوه.</p>
+    </div>
+    <div class="card fade-in">
+      <div class="symbol">☁</div>
+      <h3>سمسم نفسها بقا </h3>
+      <p>تفاصيلك وطريقتك وكلامك،و كلا حاكة فيكي و الحاجات اللي بتخليكي مختلفة ومش شبه حد.</p>
+    </div>
+    <div class="card fade-in">
+      <div class="symbol">🌷</div>
+      <h3>قيمتك</h3>
+      <p>إنتِي تستاهلي كل حاجة حلوه ف الدنيا دي يسمسم والله.</p>
+    </div>
+  </div>
+</section>
+
+<section class="memory">
+  <div class="section-label fade-in">A LITTLE REMINDER</div>
+  <h2 class="fade-in">عايز اقول حاجة</h2>
+  <div class="memory-box fade-in">
+    <p>
+    شكرا على وجودك يسمسم و على كل حاجة تحفه بتعمليها و والله بجد وجودك بالنسبالي حاجة كبيره اوي اوي اوي
+    </p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="section-label fade-in">FROM MY HEART</div>
+  <h2 class="fade-in">فيه كلام مخصوص ليكي</h2>
+  <p class="description fade-in">
+  عملتلك الصفحة دي عشان فيه كلام نفسي يوصلك، حتى لو مش بعرف أقوله كله مرة واحدة.
+  </p>
+
+  <button id="myRevealBtn" class="reveal-btn fade-in" onclick="revealLetterDirect(event)">
+  افتحي رسالتك ♡
+  </button>
+
+  <div id="hiddenLetter" class="letter-paper">
+    <p>
+    سما،
+    <br><br>
+    يمكن يوم 11/11 بالنسبة لناس كتير مجرد تاريخ لكن أنا حبيت أخليه فرصة أقولك فيها حاجة مهمه
+    <br><br>
+    إنتِ بالنسبالي مش شخص عادي في حياتي إنتيِ حد وجوده فارق معايا بجد
+    بحب تفاصيلك و كل حاجة والله بعني يعني يعني انتي فاهمه بقا متزقيش طاه
+    <br><br>
+    عايزك تعرفي إنك مهمة عندي أكتر ما الكلام ممكن يوصف و يارب يسمسم اشوفك ف كليه طب و مبسوطه و محفقه كل الي نفسك فيه و يعني يعني يعني
+    وإن وجودك حاجة أنا مقدّرها ومش باخدها كأنها أمر عادي و بسيط يعني ده انتي سمسم حتى
+    <br><br>
+    أتمنى أشوفك دايمًا مبسوطةو ناجحةو مطمنة وتحققي كل حاجة نفسك فيها
+    وأتمنى مهما كانت الأيام صعبة
+    متنسيش أبدًا إنك شخص يستحق كل الحاجات الحلوة
+    <br><br>
+    مش عايز اليوم ده يعدّي من غير ما تعرفي
+    إن مزاميزو شايفك مميزة اوي والله حتت جولدايه كده
+    وبيشكرك إنك موجودة في حياته
+    </p>
+    <div class="signature">
+    With love, always ♡
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="section-label fade-in">ONE LAST THING</div>
+  <h2 class="fade-in">You're special.</h2>
+  <div class="big-heart fade-in">♡</div>
+  <p class="description fade-in">
+  Happy 11.11, Sama.
+  <br>
+  أتمنى ف يوم من الايام تشوفي نفسك ب عيون مزاميزو و بس يعني كانت شويه مسدجات بسيطه من مزاميزو عشان حب يعرفك انه فاكرك دايما حتم لو حي جاجة يع بس يعني حاولنا يعني ربنا يخليكي ليا يسمسمتي
+  </p>
+</section>
+
+<footer>
+MADE WITH LOVE · 11.11.2026
+<br><br>
+A LITTLE UNIVERSE FOR SAMA ♡
+</footer>
+
+</main>
+
+<script>
+// Audio Control
+const audio = document.getElementById('bgMusic');
+let isPlaying = false;
+
+function toggleMusic() {
+  if (isPlaying) {
+    audio.pause();
+    document.getElementById('musicIcon').innerText = '🎵';
+    document.getElementById('musicText').innerText = 'تشغيل الموسيقى';
+  } else {
+    audio.play();
+    document.getElementById('musicIcon').innerText = '🎶';
+    document.getElementById('musicText').innerText = 'إيقاف الموسيقى';
+  }
+  isPlaying = !isPlaying;
+}
+
+// Open Site Function with Heart Burst Effect
+function openSite(e) {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('main').classList.add('visible');
+  
+  // Try Auto playing music
+  audio.play().then(() => {
+    isPlaying = true;
+    document.getElementById('musicIcon').innerText = '🎶';
+    document.getElementById('musicText').innerText = 'إيقاف الموسيقى';
+  }).catch(() => {});
+
+  createHeartBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+}
+
+// Direct Reveal Letter Function
+function revealLetterDirect(e) {
+  var letterDiv = document.getElementById('hiddenLetter');
+  var btn = document.getElementById('myRevealBtn');
+  
+  letterDiv.style.display = 'block';
+  if(btn) btn.style.display = 'none';
+
+  if (e) createHeartBurst(e.clientX, e.clientY);
+
+  setTimeout(function() {
+    letterDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+// Heart Burst Effect (Confetti)
+function createHeartBurst(x, y) {
+  const symbols = ['♡', '✨', '🌸', '💖', '✧'];
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart-particle';
+    heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+    heart.style.left = (x + (Math.random() * 100 - 50)) + 'px';
+    heart.style.top = (y + (Math.random() * 100 - 50)) + 'px';
+    heart.style.color = '#d88da7';
+    heart.style.fontSize = (15 + Math.random() * 15) + 'px';
+    document.body.appendChild(heart);
+    
+    setTimeout(() => heart.remove(), 2500);
+  }
+}
+
+// Floating stars in background
+const container = document.getElementById('stars');
+for (let i = 0; i < 35; i++) {
+  const star = document.createElement('span');
+  star.className = 'star';
+  star.textContent = Math.random() > .5 ? '✧' : '·';
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.fontSize = (10 + Math.random() * 15) + 'px';
+  star.style.animationDelay = Math.random() * 3 + 's';
+  container.appendChild(star);
+}
+
+// Scroll Intersection Observer for smooth Reveal Animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('appear');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
+
